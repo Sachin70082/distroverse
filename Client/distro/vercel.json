@@ -1,0 +1,10 @@
+{
+    "rewrites": [
+      { "source": "/upload", "destination": "/" },
+      { "source": "/home", "destination": "/" },
+      { "source": "/accounting", "destination": "/" },
+      { "source": "/login", "destination": "/" },
+      { "source": "/(.*)", "destination": "/$1" }
+    ]
+  }
+  
