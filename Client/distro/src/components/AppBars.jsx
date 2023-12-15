@@ -18,6 +18,7 @@ const AppBars = () => {
     const handleLogout = () => {
       setLoading(true);
       localStorage.removeItem('token');
+        window.location.href = '/';
       
       // Redirect to '/login' or perform any other logout actions as needed
     };
