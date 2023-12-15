@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import { Route, Routes, useNavigate } from 'react-router-dom';
-import AppBars from './Components/AppBars.jsx';
-import Footer from './Components/Footer.jsx';
-import Home from './Components/Home.jsx';
-import Upload from './Components/Upload.jsx';
-import Accounting from './Components/Accounting.jsx';
+import AppBars from './components/AppBars.jsx';
+import Footer from './components/Footer.jsx';
+import Home from './components/Home.jsx';
+import Upload from './components/Upload.jsx';
+import Accounting from './components/Accounting.jsx';
 
-import Login from './Components/Login.jsx';
+import Login from './components/Login.jsx';
 
 import Cookies from 'js-cookie';
 
