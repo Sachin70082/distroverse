@@ -1,0 +1,11 @@
+# Redirect rules for Netlify site
+
+# Redirect specific paths to other paths or external URLs
+/login        /auth/login
+/home         /dashboard
+/upload       /file-upload
+/logout       /auth/logout
+/accounting   /app/accounting
+
+# Fallback to the root URL for any other unspecified paths
+/*            /

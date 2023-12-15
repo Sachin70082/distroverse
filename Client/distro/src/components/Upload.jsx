@@ -238,7 +238,7 @@ const handleDateChange = (date, field) => {
     completeFormData.append('audio', audioFile);
   
     const xhr = new XMLHttpRequest();
-    xhr.open('POST', 'http://localhost:3000/upload');
+    xhr.open('POST', 'https://lyf-music-dashboard.onrender.com/upload');
 
     const storedToken = localStorage.getItem('token');
     if (!storedToken) {

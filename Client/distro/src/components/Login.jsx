@@ -34,7 +34,7 @@ const Login = () => {
         body: JSON.stringify(userData),
       };
   
-      const response = await fetch('http://localhost:3000/api/login', requestOptions);
+      const response = await fetch('https://lyf-music-dashboard.onrender.com/api/login', requestOptions);
   
       if (!response.ok) {
         const errorData = await response.json();

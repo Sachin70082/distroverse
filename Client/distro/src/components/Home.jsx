@@ -32,7 +32,7 @@ const Home = () => {
           },
         };
   
-        const response = await fetch('http://localhost:3000/api/allData', requestOptions);
+        const response = await fetch('https://lyf-music-dashboard.onrender.com/api/allData', requestOptions);
   
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -101,7 +101,7 @@ const renderMobileTable = () => {
   data.slice(startIndex, endIndex).map((row, index) => (
     <TableRow key={index} sx={{ '&:hover': { backgroundColor: '#f5f5f5' } }}>
       <TableCell component="th" scope="row">
-        <img src={`http://localhost:3000/${row.artworkFilePath}`} alt="" style={{ width: '50px', height: '50px' }} />
+        <img src={`https://lyf-music-dashboard.onrender.com/${row.artworkFilePath}`} alt="" style={{ width: '50px', height: '50px' }} />
       </TableCell>
       <TableCell>
         <Typography variant="body2">{row.formData.albumUPC}</Typography>
@@ -176,7 +176,7 @@ const renderDesktopTable = () => {
             data.slice(startIndex, endIndex).map((row, index) => (
               <TableRow key={index} sx={{ '&:hover': { backgroundColor: '#f5f5f5' } }}>
                 <TableCell component="th" scope="row">
-                  <img src={`http://localhost:3000/${row.artworkFilePath}`} alt="" style={{ width: '50px', height: '50px' }} />
+                  <img src={`https://lyf-music-dashboard.onrender.com/${row.artworkFilePath}`} alt="" style={{ width: '50px', height: '50px' }} />
                 </TableCell>
                 <TableCell variant="body2">{row.formData.albumUPC}</TableCell>
                 <TableCell align="left">
