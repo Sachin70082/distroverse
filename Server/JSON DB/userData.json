@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "name": "John Doe",
+    "email": "johndoe@example.com",
+    "userID": "john123",
+    "password": "1",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiJqb2huMTIzIiwiaWF0IjoxNzAyNjI1ODQxfQ.AvTIG51VEcNskpeEcPmJ5i02quNKkh9mJFx3j84P6KU"
+  },
+  {
+    "id": 2,
+    "name": "Alice Smith",
+    "email": "alice@example.com",
+    "userID": "alice456",
+    "password": "p",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiJhbGljZTQ1NiIsImlhdCI6MTcwMjYyMzE2NH0.yz4WpDPFUD5gF3N6Q7QwKbJoBZ2xM3iu8hTzLuO_yeE"
+  },
+  {
+    "id": 3,
+    "name": "Bob Johnson",
+    "email": "bob@example.com",
+    "userID": "bob789",
+    "password": "s",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiJib2I3ODkiLCJpYXQiOjE3MDI2MjM0MzV9.xWUg3R5BxBXbHhl0Qb12Mmkf9BdAW2S7qJ5T9d4PGgg"
+  }
+]
