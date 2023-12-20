@@ -81,13 +81,16 @@ app.post('/api/login', (req, res) => {
         user.token = token;
       }
 
+      const role = user.role; // Assuming user object has a 'role' property
+
       // Update the JSON file with the new token
       fs.writeFile(userDataPath, JSON.stringify(userData, null, 2), err => {
         if (err) {
           return res.status(500).json({ message: 'Error updating user data with token.' });
         }
         
-        res.json({ token, userId: user.userID });
+        res.json({ token, userId: user.userID, role });
+         // Include role in the response
       });
 
     } catch (parseError) {
@@ -95,6 +98,7 @@ app.post('/api/login', (req, res) => {
     }
   });
 });
+
 
 app.get('/api/allData', auth, (req, res) => {
   try {
@@ -118,10 +122,131 @@ app.get('/api/allData', auth, (req, res) => {
   }
 });
 
+app.get('/admin/allData', auth, (req, res) => {
+  try {
+    const userData = JSON.parse(fs.readFileSync('./JSON DB/userData.json', 'utf8')); // Load userData
+    const allData = JSON.parse(fs.readFileSync('./JSON DB/allData.json', 'utf8')); // Load allData
+
+    const authenticatedUserId = req.userId; // Convert req.userId to string if necessary
+
+    // Filter allData based on authenticated user's userId
+    const userDataFiltered = allData
+
+    if (userDataFiltered.length === 0) {
+      
+      return res.status(404).json({ message: 'No data found for the authenticated user.' });
+    }
+
+    res.json(userDataFiltered); // Send filtered data
+  } catch (error) {
+    
+    res.status(500).json({ error: 'Failed to fetch data' });
+  }
+});
+
+
+app.get('/download-metadata/:id', (req, res) => {
+  const id = req.params.id;
+
+  fs.readFile('./JSON DB/allData.json', 'utf8', (err, data) => {
+    if (err) {
+      return res.status(500).send('Error reading the file');
+    }
+
+    try {
+      const jsonData = JSON.parse(data);
+      const row = jsonData.find((item) => item.id === id);
+
+      if (!row || !row.formData || !row.formData.albumTitle) {
+        return res.status(404).send('Data not found or incomplete');
+      }
+
+      const textData = `
+      ID: ${row.id}
+      Label: ${row.formData.label || 'Unknown'}
+      Previously Released: ${row.formData.previouslyReleased || 'Unknown'}
+      Artist: ${row.formData.artist || 'Unknown'}
+      Original Release Date: ${row.formData.originalReleaseDate || 'Unknown'}
+      New Release Date: ${row.formData.newReleaseDate || 'Unknown'}
+      Artist Spotify URL: ${row.formData.artistSpotifyUrl || 'Unknown'}
+      Album Title: ${row.formData.albumTitle || 'Unknown'}
+      Album UPC: ${row.formData.albumUPC || 'Unknown'}
+      Track Title: ${row.formData.trackTitle || 'Unknown'}
+      Track Version: ${row.formData.trackVersion || 'Unknown'}
+      Track Artist: ${row.formData.trackArtist || 'Unknown'}
+      Featuring Artists: ${row.formData.featuringArtists || 'Unknown'}
+      Composer: ${row.formData.composer || 'Unknown'}
+      Author: ${row.formData.author || 'Unknown'}
+      ISRC Code: ${row.formData.isrcCode || 'Unknown'}
+      P Line: ${row.formData.pLine || 'Unknown'}
+      C Line: ${row.formData.cLine || 'Unknown'}
+      Special Message: ${row.formData.specialMessage || 'Unknown'}
+      Select Stores: ${row.formData.selectStores || 'Unknown'}
+      
+    `;
+      
+      res.setHeader('Content-Disposition', `attachment; filename=${row.id}_metadata.txt`);
+      res.setHeader('Content-Type', 'text/plain');
+      res.send(textData);
+    } catch (parseError) {
+      return res.status(500).send('Error parsing JSON data');
+    }
+  });
+});
+
+// Endpoint to download artwork
+
+
+app.get('/download-artwork/:id', (req, res) => {
+
+  const jsonData = require('./JSON DB/allData.json');
+
+  const id = req.params.id;
+
+  // Find the item in your JSON data that matches the provided ID
+  const matchingItem = jsonData.find((item) => item.id === id);
+
+  if (!matchingItem || !matchingItem.artworkFilePath) {
+    return res.status(404).send('Artwork file not found');
+  }
+
+  const filePath = matchingItem.artworkFilePath; // Path to the artwork file
+
+  res.download(filePath, `${id}_artwork.jpg`, (err) => {
+    if (err) {
+      res.status(500).send('Error downloading the file');
+    }
+  });
+});
+
+
+// Endpoint to download WAV file
+app.get('/download-wav/:id', (req, res) => {
+  const id = req.params.id;
+
+  // Retrieve the JSON data or require it if it's in a separate file
+  const jsonData = require('./JSON DB/allData.json');
+
+  // Find the item in your JSON data that matches the provided ID
+  const matchingItem = jsonData.find((item) => item.id === id);
+
+  if (!matchingItem || !matchingItem.audioFilePath) {
+    return res.status(404).send('Audio file not found');
+  }
+
+  const filePath = matchingItem.audioFilePath; // Path to the audio file
+
+  res.download(filePath, `${id}_audio.wav`, (err) => {
+    if (err) {
+      res.status(500).send('Error downloading the file');
+    }
+  });
+});
+
 
 const { promises: fsPromises } = require('fs');
 
-app.post('/upload', auth, upload.fields([{ name: 'audio' }, { name: 'artwork' }]), async (req, res) => {
+app.post('/api/upload', auth, upload.fields([{ name: 'audio' }, { name: 'artwork' }]), async (req, res) => {
   try {
     if (!req.files || !req.files['audio'] || !req.files['artwork']) {
       return res.status(400).send('Both audio and artwork files are required.');
