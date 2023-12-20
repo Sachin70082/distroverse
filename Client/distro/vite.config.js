@@ -1,7 +1,22 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
 
-// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
-})
+  // Other Vite configurations
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://lyf-music-dashboard.onrender.com', // Your API server address
+        changeOrigin: true,
+        // Rewrite the path if necessary
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+      '/another-api': {
+        target: 'https://another-api.example.com', // Another API server address
+        changeOrigin: true,
+        // Rewrite the path if necessary
+        rewrite: (path) => path.replace(/^\/another-api/, ''),
+      },
+      
+    },
+  },
+});
