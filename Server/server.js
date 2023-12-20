@@ -246,7 +246,7 @@ app.get('/download-wav/:id', (req, res) => {
 
 const { promises: fsPromises } = require('fs');
 
-app.post('/api/upload', auth, upload.fields([{ name: 'audio' }, { name: 'artwork' }]), async (req, res) => {
+app.post('/upload', auth, upload.fields([{ name: 'audio' }, { name: 'artwork' }]), async (req, res) => {
   try {
     if (!req.files || !req.files['audio'] || !req.files['artwork']) {
       return res.status(400).send('Both audio and artwork files are required.');
