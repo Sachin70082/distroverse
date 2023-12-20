@@ -17,7 +17,11 @@ const filePath = './JSON DB/allData.json';
 
 const { v4: uuidv4 } = require('uuid');
 
-app.use(cors()); // Enable CORS
+const corsOptions = {
+  origin: 'https://distroverse.vercel.app', // Replace with your client's domain
+  // Add other CORS options if needed
+};
+app.use(cors(corsOptions));
 app.use(bodyParser.json()); // Parse JSON body
 app.use(bodyParser.urlencoded({ extended: true })); // Parse URL-encoded bodies
 
