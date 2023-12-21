@@ -17,19 +17,13 @@ const filePath = './JSON DB/allData.json';
 
 const { v4: uuidv4 } = require('uuid');
 
-app.use(cors({
-  origin: (origin, callback) => {
-    // Check if the request origin is allowed
-    const allowedOrigins = ['http://localhost:3000', 'https://distroverse.vercel.app']; // Add more allowed origins
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  methods: 'GET, POST, PUT, DELETE',
-  allowedHeaders: 'Authorization, Content-Type',
-}));
+const corsOptions = {
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Authorization', 'Content-Type'],
+};
+
+app.use(cors(corsOptions));
 app.use(bodyParser.json()); // Parse JSON body
 app.use(bodyParser.urlencoded({ extended: true })); // Parse URL-encoded bodies
 
@@ -258,7 +252,7 @@ app.get('/download-wav/:id', (req, res) => {
 
 const { promises: fsPromises } = require('fs');
 
-app.post('/upload', auth, upload.fields([{ name: 'audio' }, { name: 'artwork' }]), async (req, res) => {
+app.post('/api/upload', auth, upload.fields([{ name: 'audio' }, { name: 'artwork' }]), async (req, res) => {
   try {
     if (!req.files || !req.files['audio'] || !req.files['artwork']) {
       return res.status(400).send('Both audio and artwork files are required.');
