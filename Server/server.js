@@ -17,11 +17,19 @@ const filePath = './JSON DB/allData.json';
 
 const { v4: uuidv4 } = require('uuid');
 
-const corsOptions = {
-  origin: 'https://distroverse.vercel.app', // Replace with your client's domain
-  // Add other CORS options if needed
-};
-app.use(cors(corsOptions));
+app.use(cors({
+  origin: (origin, callback) => {
+    // Check if the request origin is allowed
+    const allowedOrigins = ['http://localhost:3000', 'https://distroverse.vercel.app']; // Add more allowed origins
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: 'GET, POST, PUT, DELETE',
+  allowedHeaders: 'Authorization, Content-Type',
+}));
 app.use(bodyParser.json()); // Parse JSON body
 app.use(bodyParser.urlencoded({ extended: true })); // Parse URL-encoded bodies
 
